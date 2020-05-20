@@ -1,0 +1,20 @@
+module tfe {
+  source = "./modules/tfe"
+  common_tags = var.default_tags
+# Variables specific to this module
+  friendly_name_prefix = "friendly"
+  region = "us-west-1"
+  #tfe_hostname = join(".", ["tfe", module.domain.domain_name])
+  #tfe_hostname = "tfe.paullemon-exp.xyz"
+  tfe_hostname = "paullemon-exp.xyz"
+  tfe_license_file_path = "./modules/tfe/files/terraform-chip.rli"
+  tfe_initial_admin_username = "admin"
+  tfe_initial_admin_pw = "cJ8SvEn7IarA"
+# Variables passed from another module
+  vpc_id = module.us-west-1.vpc-tfe
+  alb_subnet_ids = module.us-west-1.sub-tfe_public
+  ec2_subnet_ids = module.us-west-1.sub-tfe_private
+  rds_subnet_ids = module.us-west-1.sub-tfe_private
+  route53_hosted_zone_name = "paullemon-exp.xyz"
+  ingress_cidr_ec2_allow = [module.us-west-1.vpc-tfe_cidr]
+}

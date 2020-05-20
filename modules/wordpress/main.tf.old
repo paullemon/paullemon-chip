@@ -1,0 +1,139 @@
+provider "aws" {
+  region = var.region
+}
+data "aws_vpc" "vpc" {
+  tags = {
+    Name = "Spacely Sprockets - Application - VPC"
+  }
+}
+data "aws_subnet_ids" "public" {
+  vpc_id = data.aws_vpc.vpc.id
+  tags = {
+    Name = "Spacely Sprockets - Application - Public Subnet*"
+  }
+} 
+data "aws_subnet_ids" "private" {
+  vpc_id = data.aws_vpc.vpc.id
+  tags = {
+    Name = "Spacely Sprockets - Application - Private Subnet*"
+  }
+}
+
+## RDS
+resource "aws_security_group" "sg-db-wordpress" {
+  vpc_id = data.aws_vpc.vpc.id
+  ingress {
+    protocol = 6
+    from_port = 3306
+    to_port = 3306
+    cidr_blocks = [data.aws_vpc.vpc.cidr_block]
+  }
+  egress {
+    protocol = -1
+    from_port = 0
+    to_port = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags =  merge(
+    var.default_tags,
+    map(
+	  "Name",  "${var.default_tags["Project"]} - Application - Wordpress DB"
+    )
+  )
+}
+resource "aws_db_instance" "wordpress" {
+  allocated_storage = var.db_volume
+  storage_type = "gp2"
+  db_subnet_group_name = aws_db_subnet_group.wordpress.id
+  engine = "mysql"
+  engine_version = "5.7.28"
+  instance_class = var.db_size
+  name = "ebdb"
+  multi_az = true
+  identifier = "ebdb"
+  #final_snapshot_identifier = "${var.tenant_env}-db-wordpress-final-snapshot"
+  skip_final_snapshot = true
+  username = var.username
+  password = var.password
+  vpc_security_group_ids = [aws_security_group.sg-db-wordpress.id]
+  tags = merge(
+    { Name = "${var.default_tags["Project"]} - Application - Wordpress DB" },
+    var.default_tags
+  ) 
+}
+resource "aws_db_subnet_group" "wordpress" {
+  name = "wordpress"
+  subnet_ids = data.aws_subnet_ids.private.ids
+  tags = merge(
+    { Name = "${var.default_tags["Project"]} - Application - Wordpress DB SubnetGroup" },
+    var.default_tags
+  )
+}
+
+## Front End
+data "aws_iam_policy_document" "ec2" {
+  statement {
+    sid = ""
+    actions = [
+      "sts:AssumeRole",
+    ]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+    effect = "Allow"
+  }
+
+  statement {
+    sid = ""
+    actions = [
+      "sts:AssumeRole",
+    ]
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
+    }
+    effect = "Allow"
+  }
+}
+resource "aws_iam_role" "ec2" {
+  name = "wordpress-eb-ec2"
+  assume_role_policy = data.aws_iam_policy_document.ec2.json
+}
+resource "aws_iam_instance_profile" "ec2" {
+  name = "wordpress-eb-ec2"
+  role = aws_iam_role.ec2.name
+}
+resource "aws_elastic_beanstalk_application" "wordpress" {
+  name = "wordpress"
+}
+resource "aws_elastic_beanstalk_environment" "wordpress" {
+  name = "wordpress"
+  application = aws_elastic_beanstalk_application.wordpress.name
+  solution_stack_name = "64bit Amazon Linux 2 v3.0.1 running PHP 7.4"
+  setting {
+    namespace = "aws:ec2:vpc"
+    name = "VPCId"
+    value = data.aws_vpc.vpc.id
+  }
+  setting {
+    namespace = "aws:ec2:vpc"
+    name = "Subnets"
+    value = join(",", data.aws_subnet_ids.public.ids)
+  }
+  setting {
+    namespace = "aws:elb:listener"
+    name = "ListenerProtocol"
+    value = "HTTP"
+  }
+  setting {
+    namespace = "aws:elb:listener"
+    name = "ListenerPort"
+    value = "80"
+  }
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = aws_iam_instance_profile.ec2.name
+  }
+}
