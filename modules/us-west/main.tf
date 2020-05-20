@@ -68,7 +68,7 @@ resource "aws_route_table" "rtb-tfe_public" {
   vpc_id = aws_vpc.vpc-tfe.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.igw-tfe.id}"
+    gateway_id = aws_internet_gateway.igw-tfe.id
   }
   route {
     cidr_block                = aws_vpc.vpc-app.cidr_block
@@ -292,7 +292,7 @@ resource "aws_route_table" "rtb-app_public" {
   vpc_id = aws_vpc.vpc-app.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.igw-app.id}"
+    gateway_id = aws_internet_gateway.igw-app.id
   }
   route {
     cidr_block                = aws_vpc.vpc-tfe.cidr_block
