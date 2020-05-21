@@ -97,11 +97,22 @@ resource "aws_route" "adm_usw2_adm_euc1-adm_usw2-private" {
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw2_adm_euc1.id
 }
 
-
 resource "aws_vpc_peering_connection_accepter" "adm_usw1_adm_usw2" {
   provider                  = aws.usw2
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw1_adm_usw2.id
   auto_accept               = true
+}
+resource "aws_route" "adm_usw1_adm_usw2-adm_usw2-public" {
+  provider                  = aws.usw2
+  route_table_id            = var.vpc-adm_usw2[2]
+  destination_cidr_block    = var.vpc-adm_usw1[1]
+  vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw1_adm_usw2.id
+}
+resource "aws_route" "adm_usw1_adm_usw2-adm_usw2-private" {
+  provider                  = aws.usw2
+  route_table_id            = var.vpc-adm_usw2[3]
+  destination_cidr_block    = var.vpc-adm_usw1[1]
+  vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw1_adm_usw2.id
 }
 
 ########################################
