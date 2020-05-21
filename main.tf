@@ -3,25 +3,25 @@ module iam {
   region = "us-west-1"
 }
 module us-west-1 {
-  source = "./modules/us-west"
+  source       = "./modules/us-west"
   default_tags = var.default_tags
   # Variables specfic to this module
   region = "us-west-1"
 }
 module us-west-2 {
-  source = "./modules/us-west"
+  source       = "./modules/us-west"
   default_tags = var.default_tags
   # Variables specfic to this module
   region = "us-west-2"
 }
 module eu-central-1 {
-  source = "./modules/eu-central-1"
+  source       = "./modules/eu-central-1"
   default_tags = var.default_tags
   # Variables specfic to this module
   region = "eu-central-1"
 }
 module regionpeering {
-  source = "./modules/regionpeering"
+  source       = "./modules/regionpeering"
   default_tags = var.default_tags
   # Variables passed in from another module
   vpc-adm_usw1 = [module.us-west-1.vpc-adm, module.us-west-1.vpc-adm_cidr, module.us-west-1.rtb-adm_public, module.us-west-1.rtb-adm_private]
