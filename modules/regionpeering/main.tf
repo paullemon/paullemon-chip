@@ -166,8 +166,8 @@ resource "aws_vpc_peering_connection" "app_usw1_app_euc1" {
 }
 resource "aws_route" "app_usw1_app_euc1-peer" {
   count                     = length(var.rtb_names)
-  provider                  = aws.usw2
-  route_table_id            = var.vpc-app_usw2[count.index + 2]
+  provider                  = aws.usw1
+  route_table_id            = var.vpc-app_usw1[count.index + 2]
   destination_cidr_block    = var.vpc-app_euc1[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.app_usw1_app_euc1.id
 }
@@ -180,7 +180,7 @@ resource "aws_route" "app_usw1_app_euc1-accepter" {
   count                     = length(var.rtb_names)
   provider                  = aws.euc1
   route_table_id            = var.vpc-app_euc1[count.index + 2]
-  destination_cidr_block    = var.vpc-app_usw2[1]
+  destination_cidr_block    = var.vpc-app_usw1[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.app_usw1_app_euc1.id
 }
 # usw2 to euc1
