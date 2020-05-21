@@ -23,6 +23,22 @@ module eu-central-1 {
   # Variables specfic to this module
   region = "eu-central-1"
 }
+module regionpeering {
+  source = "./modules/regionpeering"
+  # Variables passed into this module
+  default_tags = var.default_tags
+  # Variables specfic to this module
+  region = ["us-west-1", "us-west-2", "eu-central-1"]  
+  # Variables passed in from another module
+  vpc-tfe0 = module.us-west-1.vpc-tfe
+  vpc-tfe1 = module.us-west-2.vpc-tfe
+  vpc-app0 = module.us-west-1.vpc-app
+  vpc-app1 = module.us-west-2.vpc-app
+  vpc-app2 = module.eu-central-1.vpc-app
+  vpc-adm0 = module.us-west-1.vpc-adm
+  vpc-adm1 = module.us-west-2.vpc-adm
+  vpc-adm2 = module.eu-central-1.vpc-adm
+}
 
 ##########################
 ## Removed from main.tf ##
