@@ -13,7 +13,7 @@ provider "aws" {
 
 ########################################
 # Full mesh VPC peering for Admin VPCs #
-# Provider "aws.usw1" (us-west-1)         #
+# Provider "aws.usw1" (us-west-1)      #
 ########################################
 resource "aws_vpc_peering_connection" "adm0_adm1" {
   provider    = aws.usw1
@@ -41,10 +41,23 @@ resource "aws_vpc_peering_connection" "adm0_adm2" {
     )
   )
 }
+resource "aws_route" "adm0_adm1-adm0-public" {
+  provider                  = aws.usw1
+  route_table_id            = var.vpc-adm0[2]
+  destination_cidr_block    = var.vpc-adm1[1]
+  vpc_peering_connection_id = aws_vpc_peering_connection.adm0_adm1.id
+}
+resource "aws_route" "adm0_adm1-adm0-private" {
+  provider                  = aws.usw1
+  route_table_id            = var.vpc-adm0[3]
+  destination_cidr_block    = var.vpc-adm1[1]
+  vpc_peering_connection_id = aws_vpc_peering_connection.adm0_adm1.id
+}
+
 
 ########################################
 # Full mesh VPC peering for Admin VPCs #
-# Provider "aws.usw2" (us-west-2)         #
+# Provider "aws.usw2" (us-west-2)      #
 ########################################
 resource "aws_vpc_peering_connection" "adm1_adm2" {
   provider    = aws.usw2
@@ -67,7 +80,7 @@ resource "aws_vpc_peering_connection_accepter" "adm0_adm1" {
 
 ########################################
 # Full mesh VPC peering for Admin VPCs #
-# Provider "aws.euc1" (eu-central-1)      #
+# Provider "aws.euc1" (eu-central-1)   #
 ########################################
 resource "aws_vpc_peering_connection_accepter" "adm0_adm2" {
   provider                  = aws.euc1
@@ -82,7 +95,7 @@ resource "aws_vpc_peering_connection_accepter" "adm1_adm2" {
 
 ##############################################
 # Full mesh VPC peering for Application VPCs #
-# Provider "aws.usw1" (us-west-1)               #
+# Provider "aws.usw1" (us-west-1)            #
 ##############################################
 resource "aws_vpc_peering_connection" "app0_app1" {
   provider    = aws.usw1
@@ -113,7 +126,7 @@ resource "aws_vpc_peering_connection" "app0_app2" {
 
 ##############################################
 # Full mesh VPC peering for Application VPCs #
-# Provider "aws.usw2" (us-west-2)               #
+# Provider "aws.usw2" (us-west-2)            #
 ##############################################
 resource "aws_vpc_peering_connection_accepter" "app0_app1" {
   provider                  = aws.usw2
@@ -136,7 +149,7 @@ resource "aws_vpc_peering_connection" "app1_app2" {
 
 ##############################################
 # Full mesh VPC peering for Application VPCs #
-# Provider "aws.euc1" (eu-central-1)            #
+# Provider "aws.euc1" (eu-central-1)         #
 ##############################################
 resource "aws_vpc_peering_connection_accepter" "app0_app2" {
   provider                  = aws.euc1
@@ -152,7 +165,7 @@ resource "aws_vpc_peering_connection_accepter" "app1_app2" {
 
 ######################################
 # Full mesh VPC peering for TFE VPCs #
-# Provider "aws.usw1" (us-west-1)       #
+# Provider "aws.usw1" (us-west-1)    #
 ######################################
 resource "aws_vpc_peering_connection" "tfe0_tfe1" {
   provider    = aws.usw1
@@ -182,7 +195,7 @@ resource "aws_route" "tfe0_tfe1-tfe0-private" {
 
 ######################################
 # Full mesh VPC peering for TFE VPCs #
-# Provider "aws.usw2" (us-west-2)       #
+# Provider "aws.usw2" (us-west-2)    #
 ######################################
 resource "aws_vpc_peering_connection_accepter" "tfe0_tfe1" {
   provider                  = aws.usw2
