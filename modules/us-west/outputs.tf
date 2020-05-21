@@ -5,6 +5,12 @@ output "vpc-tfe" {
 output "vpc-tfe_cidr" {
   value = aws_vpc.vpc-tfe.cidr_block
 }
+output "rtb-tfe_public" {
+  value = aws_route_table.rtb-tfe_public.id
+}
+output "rtb-tfe_private" {
+  value = aws_default_route_table.rtb-tfe_private.id
+}
 output "sub-tfe_public" {
   value = tolist(aws_subnet.sub-tfe_public.*.id)
 }
@@ -19,6 +25,18 @@ output "vpc-app" {
 output "vpc-app_cidr" {
   value = aws_vpc.vpc-app.cidr_block
 }
+output "rtb-app_public" {
+  value = aws_route_table.rtb-app_public.id
+}
+output "rtb-app_private" {
+  value = aws_default_route_table.rtb-app_private.id
+}
+output "sub-app_public" {
+  value = tolist(aws_subnet.sub-app_public.*.id)
+}
+output "sub-app_private" {
+  value = tolist(aws_subnet.sub-app_private.*.id)
+}
 
 # ADM VPC
 output "vpc-adm" {
@@ -26,4 +44,16 @@ output "vpc-adm" {
 }
 output "vpc-adm_cidr" {
   value = aws_vpc.vpc-adm.cidr_block
+}
+output "rtb-adm_public" {
+  value = aws_route_table.rtb-adm_public.id
+}
+output "rtb-adm_private" {
+  value = aws_default_route_table.rtb-adm_private.id
+}
+output "sub-adm_public" {
+  value = tolist(aws_subnet.sub-adm_public.*.id)
+}
+output "sub-adm_private" {
+  value = tolist(aws_subnet.sub-adm_private.*.id)
 }
