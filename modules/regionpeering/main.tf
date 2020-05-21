@@ -30,8 +30,8 @@ resource "aws_vpc_peering_connection" "adm_usw1_adm_usw2" {
 }
 resource "aws_route" "adm_usw1_adm_usw2-adm_usw1" {
   provider                  = aws.usw1
-  for_each = ["public", "private"]
-  route_table_id            = var.vpc-adm_usw1[for_each.index + 2]
+  for_each                  = ["public", "private"]
+  route_table_id            = var.vpc-adm_usw1[${each.index + 2}]
   destination_cidr_block    = var.vpc-adm_usw2[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw1_adm_usw2.id
 }
@@ -42,8 +42,8 @@ resource "aws_vpc_peering_connection_accepter" "adm_usw1_adm_usw2" {
 }
 resource "aws_route" "adm_usw1_adm_usw2-adm_usw2" {
   provider                  = aws.usw2
-  for_each = ["public", "private"]
-  route_table_id            = var.vpc-adm_usw2[for_each.index + 2]
+  for_each                  = ["public", "private"]
+  route_table_id            = var.vpc-adm_usw2[${each.index + 2}]
   destination_cidr_block    = var.vpc-adm_usw1[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw1_adm_usw2.id
 }
