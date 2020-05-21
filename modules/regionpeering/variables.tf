@@ -1,6 +1,5 @@
 #Variables inputted from the main module
 variable "default_tags" { type = map }
-variable "region" { type = list }
 variable "vpc-tfe0" {}
 variable "vpc-tfe1" {}
 variable "vpc-app0" {}
