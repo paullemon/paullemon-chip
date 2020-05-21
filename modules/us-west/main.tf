@@ -505,7 +505,7 @@ resource "aws_vpc_peering_connection" "app-adm" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "APP to ADM Peering"
+      "Name", "app to adm Peering"
     )
   )
 }
