@@ -46,7 +46,7 @@ resource "aws_vpc_peering_connection" "app0_app1" {
   )
 }
 resource "aws_vpc_peering_connection_accepter" "app0_app1" {
-  provider                  = "aws.us-west-2"
+  provider                  = aws.us-west-2
   vpc_peering_connection_id = aws_vpc_peering_connection.app0_app1.id
   auto_accept               = true
 }
