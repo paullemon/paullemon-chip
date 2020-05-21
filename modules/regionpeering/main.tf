@@ -39,6 +39,12 @@ resource "aws_vpc_peering_connection_accepter" "adm_usw1_adm_usw2" {
   provider                  = aws.usw2
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw1_adm_usw2.id
   auto_accept               = true
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "us-west-2 to us-west-1 - adm - Peering"
+    )
+  )
 }
 resource "aws_route" "adm_usw1_adm_usw2-accepter" {
   count                     = length(var.rtb_names)
@@ -72,6 +78,12 @@ resource "aws_vpc_peering_connection_accepter" "adm_usw1_adm_euc1" {
   provider                  = aws.euc1
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw1_adm_euc1.id
   auto_accept               = true
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "eu-central-1 to us-west-1 - adm - Peering"
+    )
+  )
 }
 resource "aws_route" "adm_usw1_adm_euc1-accepter" {
   count                     = length(var.rtb_names)
@@ -105,6 +117,12 @@ resource "aws_vpc_peering_connection_accepter" "adm_usw2_adm_euc1" {
   provider                  = aws.euc1
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw2_adm_euc1.id
   auto_accept               = true
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "eu-central-1 to us-west-2 - adm - Peering"
+    )
+  )
 }
 resource "aws_route" "adm_usw2_adm_euc1-accepter" {
   count                     = length(var.rtb_names)
@@ -141,6 +159,12 @@ resource "aws_vpc_peering_connection_accepter" "app_usw1_app_usw2" {
   provider                  = aws.usw2
   vpc_peering_connection_id = aws_vpc_peering_connection.app_usw1_app_usw2.id
   auto_accept               = true
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "us-west-2 to us-west-1 - app - Peering"
+    )
+  )
 }
 resource "aws_route" "app_usw1_app_usw2-accepter" {
   count                     = length(var.rtb_names)
@@ -174,6 +198,12 @@ resource "aws_vpc_peering_connection_accepter" "app_usw1_app_euc1" {
   provider                  = aws.euc1
   vpc_peering_connection_id = aws_vpc_peering_connection.app_usw1_app_euc1.id
   auto_accept               = true
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "eu-central-1 to us-west-1 - app - Peering"
+    )
+  )
 }
 resource "aws_route" "app_usw1_app_euc1-accepter" {
   count                     = length(var.rtb_names)
@@ -207,6 +237,12 @@ resource "aws_vpc_peering_connection_accepter" "app_usw2_app_euc1" {
   provider                  = aws.euc1
   vpc_peering_connection_id = aws_vpc_peering_connection.app_usw2_app_euc1.id
   auto_accept               = true
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "eu-central-1 to us-west-2 - app - Peering"
+    )
+  )
 }
 resource "aws_route" "app_usw2_app_euc1-accepter" {
   count                     = length(var.rtb_names)
@@ -243,6 +279,12 @@ resource "aws_vpc_peering_connection_accepter" "tfe_usw1_tfe_usw2" {
   provider                  = aws.usw2
   vpc_peering_connection_id = aws_vpc_peering_connection.tfe_usw1_tfe_usw2.id
   auto_accept               = true
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "us-west-2 to us-west-1 - tfe - Peering"
+    )
+  )
 }
 resource "aws_route" "tfe_usw1_tfe_usw2-accepter" {
   count                     = length(var.rtb_names)
