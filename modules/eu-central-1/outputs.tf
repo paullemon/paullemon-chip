@@ -1,4 +1,6 @@
-# APP VPC
+################################################
+# Application VPC
+################################################
 output "vpc-app" {
   value = aws_vpc.vpc-app.id
 }
@@ -18,7 +20,9 @@ output "sub-app_private" {
   value = tolist(aws_subnet.sub-app_private.*.id)
 }
 
-# ADM VPC
+################################################
+# Admin VPC
+################################################
 output "vpc-adm" {
   value = aws_vpc.vpc-adm.id
 }

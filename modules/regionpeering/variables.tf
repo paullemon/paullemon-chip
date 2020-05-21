@@ -1,4 +1,6 @@
-#Variables inputted from the main module
+################################################
+# Variables inputted from the main module
+################################################
 variable "default_tags" { type = map }
 variable "vpc-adm_usw1" { type = list }
 variable "vpc-adm_usw2" { type = list }

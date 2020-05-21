@@ -19,7 +19,9 @@ data "aws_subnet_ids" "private" {
   }
 }
 
-## RDS
+################################################
+# RDS
+################################################
 resource "aws_security_group" "sg-db-wordpress" {
   vpc_id = data.aws_vpc.vpc.id
   ingress {
@@ -70,7 +72,9 @@ resource "aws_db_subnet_group" "wordpress" {
   )
 }
 
-## Front End
+################################################
+# Front End
+################################################
 resource "aws_security_group" "wordpress" {
   name   = "TFE Bastion"
   vpc_id = data.aws_vpc.vpc.id

@@ -1,10 +1,13 @@
-#Variables inputted from the main module
+################################################
+# Variables inputted from the main module
+################################################
 variable "default_tags" { type = map }
 variable "region" {}
 variable "username" {}
 variable "password" {}
 
-##Variables that are hard coded in this module##
+################################################
+# Hard coded Variables
 ################################################
 variable "as_desired" { default = 0 }
 variable "as_minimum" { default = 0 }

@@ -17,8 +17,9 @@ locals {
   cidr_vpc-adm_public  = cidrsubnet(local.cidr_vpc-adm, 1, 0)
   cidr_vpc-adm_private = cidrsubnet(local.cidr_vpc-adm, 1, 1)
 }
-
-##TFE##
+################################################
+# TFE VPC
+################################################
 resource "aws_vpc" "vpc-tfe" {
   cidr_block           = local.cidr_vpc-tfe
   enable_dns_hostnames = true
@@ -225,7 +226,9 @@ resource "aws_network_acl" "nacl-tfe_public" {
   )
 }
 
-##APP##
+################################################
+# Application VPC
+################################################
 resource "aws_vpc" "vpc-app" {
   cidr_block           = local.cidr_vpc-app
   enable_dns_hostnames = true
@@ -359,7 +362,9 @@ resource "aws_default_network_acl" "nacl-app" {
   )
 }
 
-##ADM##
+################################################
+# Admin VPC
+################################################
 resource "aws_vpc" "vpc-adm" {
   cidr_block           = local.cidr_vpc-adm
   enable_dns_hostnames = true
@@ -380,7 +385,6 @@ resource "aws_internet_gateway" "igw-adm" {
   )
 }
 resource "aws_subnet" "sub-adm_public" {
-  #count = length(data.aws_availability_zones.azs.zone_ids)
   count                   = 2
   vpc_id                  = aws_vpc.vpc-adm.id
   cidr_block              = cidrsubnet(local.cidr_vpc-adm_public, 2, count.index)
@@ -394,7 +398,6 @@ resource "aws_subnet" "sub-adm_public" {
   )
 }
 resource "aws_subnet" "sub-adm_private" {
-  #count = length(data.aws_availability_zones.azs.zone_ids)
   count                   = 2
   vpc_id                  = aws_vpc.vpc-adm.id
   cidr_block              = cidrsubnet(local.cidr_vpc-adm_private, 2, count.index)
@@ -438,13 +441,11 @@ resource "aws_default_route_table" "rtb-adm_private" {
   )
 }
 resource "aws_route_table_association" "rtb-adm_public" {
-  #count = length(data.aws_availability_zones.azs.zone_ids)
   count          = 2
   subnet_id      = element(aws_subnet.sub-adm_public.*.id, count.index)
   route_table_id = aws_route_table.rtb-adm_public.id
 }
 resource "aws_route_table_association" "rtb-adm_private" {
-  #count = length(data.aws_availability_zones.azs.zone_ids)
   count          = 2
   subnet_id      = element(aws_subnet.sub-adm_private.*.id, count.index)
   route_table_id = aws_default_route_table.rtb-adm_private.id
@@ -497,7 +498,9 @@ resource "aws_default_network_acl" "nacl-adm" {
   )
 }
 
-##Local Peering
+################################################
+# This region peering
+################################################
 resource "aws_vpc_peering_connection" "app-adm" {
   peer_vpc_id = aws_vpc.vpc-adm.id
   vpc_id      = aws_vpc.vpc-app.id
