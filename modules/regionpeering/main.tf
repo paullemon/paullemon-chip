@@ -28,19 +28,6 @@ resource "aws_vpc_peering_connection" "adm0_adm1" {
     )
   )
 }
-resource "aws_vpc_peering_connection" "adm0_adm2" {
-  provider    = aws.usw1
-  vpc_id      = var.vpc-adm0[0]
-  peer_vpc_id = var.vpc-adm2[0]
-  peer_region = "eu-central-1"
-  auto_accept = false
-  tags = merge(
-    var.default_tags,
-    map(
-      "Name", "ADM0 to ADM21 Peering"
-    )
-  )
-}
 resource "aws_route" "adm0_adm1-adm0-public" {
   provider                  = aws.usw1
   route_table_id            = var.vpc-adm0[2]
@@ -54,6 +41,31 @@ resource "aws_route" "adm0_adm1-adm0-private" {
   vpc_peering_connection_id = aws_vpc_peering_connection.adm0_adm1.id
 }
 
+resource "aws_vpc_peering_connection" "adm0_adm2" {
+  provider    = aws.usw1
+  vpc_id      = var.vpc-adm0[0]
+  peer_vpc_id = var.vpc-adm2[0]
+  peer_region = "eu-central-1"
+  auto_accept = false
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "ADM0 to ADM21 Peering"
+    )
+  )
+}
+resource "aws_route" "adm0_adm2-adm0-public" {
+  provider                  = aws.usw1
+  route_table_id            = var.vpc-adm0[2]
+  destination_cidr_block    = var.vpc-adm2[1]
+  vpc_peering_connection_id = aws_vpc_peering_connection.adm0_adm2.id
+}
+resource "aws_route" "adm0_adm2-adm0-private" {
+  provider                  = aws.usw1
+  route_table_id            = var.vpc-adm0[3]
+  destination_cidr_block    = var.vpc-adm2[1]
+  vpc_peering_connection_id = aws_vpc_peering_connection.adm0_adm2.id
+}
 
 ########################################
 # Full mesh VPC peering for Admin VPCs #
