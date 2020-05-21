@@ -11,9 +11,7 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-variable "rtb_names" {
-  default = ["public", "private"]
-}
+
 ################################################
 # Vpc peering for Admin VPCs
 ################################################
@@ -217,4 +215,40 @@ resource "aws_route" "app_usw2_app_euc1-accepter" {
   route_table_id            = var.vpc-app_euc1[count.index + 2]
   destination_cidr_block    = var.vpc-app_usw2[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.app_usw2_app_euc1.id
+}
+################################################
+# Vpc peering for TFE VPCs
+################################################
+# usw1 to usw2
+resource "aws_vpc_peering_connection" "tfe_usw1_tfe_usw2" {
+  provider    = aws.usw1
+  vpc_id      = var.vpc-tfe_usw1[0]
+  peer_vpc_id = var.vpc-tfe_usw2[0]
+  peer_region = "us-west-2"
+  auto_accept = false
+  tags = merge(
+    var.default_tags,
+    map(
+      "Name", "tfe_usw1 to tfe_usw2 Peering"
+    )
+  )
+}
+resource "aws_route" "tfe_usw1_tfe_usw2-peer" {
+  count                     = length(var.rtb_names)
+  provider                  = aws.usw1
+  route_table_id            = var.vpc-tfe_usw1[count.index + 2]
+  destination_cidr_block    = var.vpc-tfe_usw2[1]
+  vpc_peering_connection_id = aws_vpc_peering_connection.tfe_usw1_tfe_usw2.id
+}
+resource "aws_vpc_peering_connection_accepter" "tfe_usw1_tfe_usw2" {
+  provider                  = aws.usw2
+  vpc_peering_connection_id = aws_vpc_peering_connection.tfe_usw1_tfe_usw2.id
+  auto_accept               = true
+}
+resource "aws_route" "tfe_usw1_tfe_usw2-accepter" {
+  count                     = length(var.rtb_names)
+  provider                  = aws.usw2
+  route_table_id            = var.vpc-tfe_usw2[count.index + 2]
+  destination_cidr_block    = var.vpc-tfe_usw1[1]
+  vpc_peering_connection_id = aws_vpc_peering_connection.tfe_usw1_tfe_usw2.id
 }
