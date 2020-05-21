@@ -10,8 +10,6 @@ provider "aws" {
   alias  = "euc1"
   region = "eu-central-1"
 }
-data "aws_region" "current" {}
-
 
 ################################################
 # Vpc peering for Admin VPCs
