@@ -1,22 +1,22 @@
 provider "aws" {
-  alias  = "0"
+  alias  = "usw1"
   region = "us-west-1"
 }
 provider "aws" {
-  alias  = "1"
+  alias  = "usw2"
   region = "us-west-2"
 }
 provider "aws" {
-  alias  = "2"
+  alias  = "euc1"
   region = "eu-central-1"
 }
 
 ########################################
 # Full mesh VPC peering for Admin VPCs #
-# Provider "aws.0" (us-west-1)         #
+# Provider "aws.usw1" (us-west-1)         #
 ########################################
 resource "aws_vpc_peering_connection" "adm0_adm1" {
-  provider    = aws.0
+  provider    = aws.usw1
   vpc_id      = var.vpc-adm0[0]
   peer_vpc_id = var.vpc-adm1[0]
   peer_region = "us-west-2"
@@ -29,7 +29,7 @@ resource "aws_vpc_peering_connection" "adm0_adm1" {
   )
 }
 resource "aws_vpc_peering_connection" "adm0_adm2" {
-  provider    = aws.0
+  provider    = aws.usw1
   vpc_id      = var.vpc-adm0[0]
   peer_vpc_id = var.vpc-adm2[0]
   peer_region = "eu-central-1"
@@ -44,10 +44,10 @@ resource "aws_vpc_peering_connection" "adm0_adm2" {
 
 ########################################
 # Full mesh VPC peering for Admin VPCs #
-# Provider "aws.1" (us-west-2)         #
+# Provider "aws.usw2" (us-west-2)         #
 ########################################
 resource "aws_vpc_peering_connection" "adm1_adm2" {
-  provider    = aws.1
+  provider    = aws.usw2
   vpc_id      = var.vpc-adm1[0]
   peer_vpc_id = var.vpc-adm2[0]
   peer_region = "eu-central-1"
@@ -60,32 +60,32 @@ resource "aws_vpc_peering_connection" "adm1_adm2" {
   )
 }
 resource "aws_vpc_peering_connection_accepter" "adm0_adm1" {
-  provider                  = aws.1
+  provider                  = aws.usw2
   vpc_peering_connection_id = aws_vpc_peering_connection.adm0_adm1.id
   auto_accept               = true
 }
 
 ########################################
 # Full mesh VPC peering for Admin VPCs #
-# Provider "aws.2" (eu-central-1)      #
+# Provider "aws.euc1" (eu-central-1)      #
 ########################################
 resource "aws_vpc_peering_connection_accepter" "adm0_adm2" {
-  provider                  = aws.2
+  provider                  = aws.euc1
   vpc_peering_connection_id = aws_vpc_peering_connection.adm0_adm2.id
   auto_accept               = true
 }
 resource "aws_vpc_peering_connection_accepter" "adm1_adm2" {
-  provider                  = aws.2
+  provider                  = aws.euc1
   vpc_peering_connection_id = aws_vpc_peering_connection.adm1_adm2.id
   auto_accept               = true
 }
 
 ##############################################
 # Full mesh VPC peering for Application VPCs #
-# Provider "aws.0" (us-west-1)               #
+# Provider "aws.usw1" (us-west-1)               #
 ##############################################
 resource "aws_vpc_peering_connection" "app0_app1" {
-  provider    = aws.0
+  provider    = aws.usw1
   vpc_id      = var.vpc-app0[0]
   peer_vpc_id = var.vpc-app1[0]
   peer_region = "us-west-2"
@@ -98,7 +98,7 @@ resource "aws_vpc_peering_connection" "app0_app1" {
   )
 }
 resource "aws_vpc_peering_connection" "app0_app2" {
-  provider    = aws.0
+  provider    = aws.usw1
   vpc_id      = var.vpc-app0[0]
   peer_vpc_id = var.vpc-app2[0]
   peer_region = "eu-central-1"
@@ -113,15 +113,15 @@ resource "aws_vpc_peering_connection" "app0_app2" {
 
 ##############################################
 # Full mesh VPC peering for Application VPCs #
-# Provider "aws.1" (us-west-2)               #
+# Provider "aws.usw2" (us-west-2)               #
 ##############################################
 resource "aws_vpc_peering_connection_accepter" "app0_app1" {
-  provider                  = aws.1
+  provider                  = aws.usw2
   vpc_peering_connection_id = aws_vpc_peering_connection.app0_app1.id
   auto_accept               = true
 }
 resource "aws_vpc_peering_connection" "app1_app2" {
-  provider    = aws.1
+  provider    = aws.usw2
   vpc_id      = var.vpc-app1[0]
   peer_vpc_id = var.vpc-app2[0]
   peer_region = "eu-central-1"
@@ -136,26 +136,26 @@ resource "aws_vpc_peering_connection" "app1_app2" {
 
 ##############################################
 # Full mesh VPC peering for Application VPCs #
-# Provider "aws.2" (eu-central-1)            #
+# Provider "aws.euc1" (eu-central-1)            #
 ##############################################
 resource "aws_vpc_peering_connection_accepter" "app0_app2" {
-  provider                  = aws.2
+  provider                  = aws.euc1
   vpc_peering_connection_id = aws_vpc_peering_connection.app0_app2.id
   auto_accept               = true
 }
 
 resource "aws_vpc_peering_connection_accepter" "app1_app2" {
-  provider                  = aws.2
+  provider                  = aws.euc1
   vpc_peering_connection_id = aws_vpc_peering_connection.app1_app2.id
   auto_accept               = true
 }
 
 ######################################
 # Full mesh VPC peering for TFE VPCs #
-# Provider "aws.0" (us-west-1)       #
+# Provider "aws.usw1" (us-west-1)       #
 ######################################
 resource "aws_vpc_peering_connection" "tfe0_tfe1" {
-  provider    = aws.0
+  provider    = aws.usw1
   vpc_id      = var.vpc-tfe0[0]
   peer_vpc_id = var.vpc-tfe1[0]
   peer_region = "us-west-2"
@@ -168,13 +168,13 @@ resource "aws_vpc_peering_connection" "tfe0_tfe1" {
   )
 }
 resource "aws_route" "tfe0_tfe1-tfe0-public" {
-  provider                  = aws.0
+  provider                  = aws.usw1
   route_table_id            = var.vpc-tfe0[2]
   destination_cidr_block    = var.vpc-tfe1[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.tfe0_tfe1.id
 }
 resource "aws_route" "tfe0_tfe1-tfe0-private" {
-  provider                  = aws.0
+  provider                  = aws.usw1
   route_table_id            = var.vpc-tfe0[3]
   destination_cidr_block    = var.vpc-tfe1[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.tfe0_tfe1.id
@@ -182,21 +182,21 @@ resource "aws_route" "tfe0_tfe1-tfe0-private" {
 
 ######################################
 # Full mesh VPC peering for TFE VPCs #
-# Provider "aws.1" (us-west-2)       #
+# Provider "aws.usw2" (us-west-2)       #
 ######################################
 resource "aws_vpc_peering_connection_accepter" "tfe0_tfe1" {
-  provider                  = aws.1
+  provider                  = aws.usw2
   vpc_peering_connection_id = aws_vpc_peering_connection.tfe0_tfe1.id
   auto_accept               = true
 }
 resource "aws_route" "tfe0_tfe1-tfe1-public" {
-  provider                  = aws.1
+  provider                  = aws.usw2
   route_table_id            = var.vpc-tfe1[2]
   destination_cidr_block    = var.vpc-tfe0[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.tfe0_tfe1.id
 }
 resource "aws_route" "tfe0_tfe1-tfe1-private" {
-  provider                  = aws.1
+  provider                  = aws.usw2
   route_table_id            = var.vpc-tfe1[3]
   destination_cidr_block    = var.vpc-tfe0[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.tfe0_tfe1.id
