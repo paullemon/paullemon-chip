@@ -25,7 +25,7 @@ resource "aws_vpc_peering_connection" "adm_usw1_adm_usw2" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "${provider.aws.usw1.region} to ${self.peer_region} - adm - Peering"
+      "Name", "${provider.aws.usw1.region} to ${aws_vpc_peering_connection.adm_usw1_adm_usw2.peer_region} - adm - Peering"
     )
   )
 }
@@ -58,7 +58,7 @@ resource "aws_vpc_peering_connection" "adm_usw1_adm_euc1" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "${provider.aws.usw1.region} to ${self.peer_region} - adm - Peering"
+      "Name", "${provider.aws.usw1.region} to ${aws_vpc_peering_connection.adm_usw1_adm_euc1.peer_region} - adm - Peering"
     )
   )
 }
@@ -91,7 +91,7 @@ resource "aws_vpc_peering_connection" "adm_usw2_adm_euc1" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "${provider.aws.usw2.region} to ${self.peer_region} - adm - Peering"
+      "Name", "${provider.aws.usw2.region} to ${aws_vpc_peering_connection.adm_usw2_adm_euc1.peer_region} - adm - Peering"
     )
   )
 }
@@ -127,7 +127,7 @@ resource "aws_vpc_peering_connection" "app_usw1_app_usw2" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "${provider.aws.usw1.region} to ${self.peer_region} - app - Peering"
+      "Name", "${provider.aws.usw1.region} to ${aws_vpc_peering_connection.app_usw1_app_usw2.peer_region} - app - Peering"
     )
   )
 }
@@ -160,7 +160,7 @@ resource "aws_vpc_peering_connection" "app_usw1_app_euc1" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "${provider.aws.usw1.region} to ${self.peer_region} - app - Peering"
+      "Name", "${provider.aws.usw1.region} to ${aws_vpc_peering_connection.app_usw1_app_euc1.peer_region} - app - Peering"
     )
   )
 }
@@ -193,7 +193,7 @@ resource "aws_vpc_peering_connection" "app_usw2_app_euc1" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "${provider.aws.usw2.region} to ${self.peer_region} - app - Peering"
+      "Name", "${provider.aws.usw2.region} to ${aws_vpc_peering_connection.app_usw2_app_euc1.peer_region} - app - Peering"
     )
   )
 }
@@ -229,7 +229,7 @@ resource "aws_vpc_peering_connection" "tfe_usw1_tfe_usw2" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "${provider.aws.usw1.region} to ${self.peer_region} - tfe - Peering"
+      "Name", "${provider.aws.usw1.region} to ${aws_vpc_peering_connection.tfe_usw1_tfe_usw2.peer_region} - tfe - Peering"
     )
   )
 }
