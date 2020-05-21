@@ -11,7 +11,7 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-variable "for_each" {
+variable "rtb_names" {
   default = ["public", "private"]
 }
 ################################################
@@ -32,9 +32,9 @@ resource "aws_vpc_peering_connection" "adm_usw1_adm_usw2" {
   )
 }
 resource "aws_route" "adm_usw1_adm_usw2-adm_usw1" {
-  for_each                  = var.for_each
+  count                     = length(var.rtb_names)
   provider                  = aws.usw1
-  route_table_id            = var.vpc-adm_usw1[length(var.for_each) + 2]
+  route_table_id            = var.vpc-adm_usw1[count.index + 2]
   destination_cidr_block    = var.vpc-adm_usw2[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw1_adm_usw2.id
 }
