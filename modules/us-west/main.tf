@@ -70,14 +70,6 @@ resource "aws_route_table" "rtb-tfe_public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw-tfe.id
   }
-  route {
-    cidr_block                = aws_vpc.vpc-app.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.tfe-app.id
-  }
-  route {
-    cidr_block                = aws_vpc.vpc-adm.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.tfe-adm.id
-  }
   tags = merge(
     var.default_tags,
     map(
@@ -87,14 +79,6 @@ resource "aws_route_table" "rtb-tfe_public" {
 }
 resource "aws_default_route_table" "rtb-tfe_private" {
   default_route_table_id = aws_vpc.vpc-tfe.default_route_table_id
-  route {
-    cidr_block                = aws_vpc.vpc-app.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.tfe-app.id
-  }
-  route {
-    cidr_block                = aws_vpc.vpc-adm.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.tfe-adm.id
-  }
   tags = merge(
     var.default_tags,
     map(
@@ -241,7 +225,6 @@ resource "aws_network_acl" "nacl-tfe_public" {
   )
 }
 
-
 ##APP##
 resource "aws_vpc" "vpc-app" {
   cidr_block           = local.cidr_vpc-app
@@ -295,10 +278,6 @@ resource "aws_route_table" "rtb-app_public" {
     gateway_id = aws_internet_gateway.igw-app.id
   }
   route {
-    cidr_block                = aws_vpc.vpc-tfe.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.tfe-app.id
-  }
-  route {
     cidr_block                = aws_vpc.vpc-adm.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.app-adm.id
   }
@@ -311,10 +290,6 @@ resource "aws_route_table" "rtb-app_public" {
 }
 resource "aws_default_route_table" "rtb-app_private" {
   default_route_table_id = aws_vpc.vpc-app.default_route_table_id
-  route {
-    cidr_block                = aws_vpc.vpc-tfe.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.tfe-app.id
-  }
   route {
     cidr_block                = aws_vpc.vpc-adm.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.app-adm.id
@@ -439,10 +414,6 @@ resource "aws_route_table" "rtb-adm_public" {
     gateway_id = aws_internet_gateway.igw-adm.id
   }
   route {
-    cidr_block                = aws_vpc.vpc-tfe.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.tfe-adm.id
-  }
-  route {
     cidr_block                = aws_vpc.vpc-app.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.app-adm.id
   }
@@ -455,10 +426,6 @@ resource "aws_route_table" "rtb-adm_public" {
 }
 resource "aws_default_route_table" "rtb-adm_private" {
   default_route_table_id = aws_vpc.vpc-adm.default_route_table_id
-  route {
-    cidr_block                = aws_vpc.vpc-tfe.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.tfe-adm.id
-  }
   route {
     cidr_block                = aws_vpc.vpc-app.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.app-adm.id
