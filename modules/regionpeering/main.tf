@@ -50,7 +50,7 @@ resource "aws_vpc_peering_connection" "adm_usw1_adm_euc1" {
   tags = merge(
     var.default_tags,
     map(
-      "Name", "adm_usw1 to adm_euc11 Peering"
+      "Name", "adm_usw1 to adm_euc1 Peering"
     )
   )
 }
