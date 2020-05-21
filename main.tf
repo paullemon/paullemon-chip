@@ -28,14 +28,14 @@ module regionpeering {
   # Variables passed into this module
   default_tags = var.default_tags
   # Variables passed in from another module
-  vpc-tfe0 = module.us-west-1.vpc-tfe
-  vpc-tfe1 = module.us-west-2.vpc-tfe
-  vpc-app0 = module.us-west-1.vpc-app
-  vpc-app1 = module.us-west-2.vpc-app
-  vpc-app2 = module.eu-central-1.vpc-app
-  vpc-adm0 = module.us-west-1.vpc-adm
-  vpc-adm1 = module.us-west-2.vpc-adm
-  vpc-adm2 = module.eu-central-1.vpc-adm
+  vpc-adm0 = [module.us-west-1.vpc-adm, module.us-west-1.vpc-adm_cidr]
+  vpc-adm1 = [module.us-west-2.vpc-adm, module.us-west-2.vpc-adm_cidr]
+  vpc-adm2 = [module.eu-central-1.vpc-adm, module.eu-central-1.vpc-adm_cidr]
+  vpc-app0 = [module.us-west-1.vpc-app, module.us-west-1.vpc-app_cidr]
+  vpc-app1 = [module.us-west-2.vpc-app, module.us-west-2.vpc-app_cidr]
+  vpc-app2 = [module.eu-central-1.vpc-app, module.eu-central-1.vpc-app_cidr]
+  vpc-tfe0 = [module.us-west-1.vpc-tfe, module.us-west-1.vpc-tfe_cidr]
+  vpc-tfe1 = [module.us-west-2.vpc-tfe, module.us-west-2.vpc-tfe_cidr]
 }
 
 ##########################
