@@ -28,14 +28,14 @@ module regionpeering {
   # Variables passed into this module
   default_tags = var.default_tags
   # Variables passed in from another module
-  vpc-adm0 = [module.us-west-1.vpc-adm, module.us-west-1.vpc-adm_cidr, module.us-west-1.rtb-adm_public, module.us-west-1.rtb-adm_private]
-  vpc-adm1 = [module.us-west-2.vpc-adm, module.us-west-2.vpc-adm_cidr, module.us-west-2.rtb-adm_public, module.us-west-2.rtb-adm_private]
-  vpc-adm2 = [module.eu-central-1.vpc-adm, module.eu-central-1.vpc-adm_cidr, module.eu-central-1.rtb-adm_public, module.eu-central-1.rtb-adm_private]
-  vpc-app0 = [module.us-west-1.vpc-app, module.us-west-1.vpc-app_cidr, module.us-west-1.rtb-app_public, module.us-west-1.rtb-app_private]
-  vpc-app1 = [module.us-west-2.vpc-app, module.us-west-2.vpc-app_cidr, module.us-west-2.rtb-app_public, module.us-west-2.rtb-app_private]
-  vpc-app2 = [module.eu-central-1.vpc-app, module.eu-central-1.vpc-app_cidr, module.eu-central-1.rtb-app_public, module.eu-central-1.rtb-app_private]
-  vpc-tfe0 = [module.us-west-1.vpc-tfe, module.us-west-1.vpc-tfe_cidr, module.us-west-1.rtb-tfe_public, module.us-west-1.rtb-tfe_private]
-  vpc-tfe1 = [module.us-west-2.vpc-tfe, module.us-west-2.vpc-tfe_cidr, module.us-west-2.rtb-tfe_public, module.us-west-2.rtb-tfe_private]
+  vpc-adm_usw1 = [module.us-west-1.vpc-adm, module.us-west-1.vpc-adm_cidr, module.us-west-1.rtb-adm_public, module.us-west-1.rtb-adm_private]
+  vpc-adm_usw2 = [module.us-west-2.vpc-adm, module.us-west-2.vpc-adm_cidr, module.us-west-2.rtb-adm_public, module.us-west-2.rtb-adm_private]
+  vpc-adm_euc1 = [module.eu-central-1.vpc-adm, module.eu-central-1.vpc-adm_cidr, module.eu-central-1.rtb-adm_public, module.eu-central-1.rtb-adm_private]
+  vpc-app_usw1 = [module.us-west-1.vpc-app, module.us-west-1.vpc-app_cidr, module.us-west-1.rtb-app_public, module.us-west-1.rtb-app_private]
+  vpc-app_usw2 = [module.us-west-2.vpc-app, module.us-west-2.vpc-app_cidr, module.us-west-2.rtb-app_public, module.us-west-2.rtb-app_private]
+  vpc-app_euc1 = [module.eu-central-1.vpc-app, module.eu-central-1.vpc-app_cidr, module.eu-central-1.rtb-app_public, module.eu-central-1.rtb-app_private]
+  vpc-tfe_usw1 = [module.us-west-1.vpc-tfe, module.us-west-1.vpc-tfe_cidr, module.us-west-1.rtb-tfe_public, module.us-west-1.rtb-tfe_private]
+  vpc-tfe_usw2 = [module.us-west-2.vpc-tfe, module.us-west-2.vpc-tfe_cidr, module.us-west-2.rtb-tfe_public, module.us-west-2.rtb-tfe_private]
 }
 
 ##########################
