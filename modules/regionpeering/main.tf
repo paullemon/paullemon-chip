@@ -84,13 +84,13 @@ resource "aws_vpc_peering_connection" "adm_usw2_adm_euc1" {
     )
   )
 }
-resource "aws_route" "adm_usw2_adm_euc1-adm_usw1-public" {
+resource "aws_route" "adm_usw2_adm_euc1-adm_usw2-public" {
   provider                  = aws.usw2
   route_table_id            = var.vpc-adm_usw2[2]
   destination_cidr_block    = var.vpc-adm_euc1[1]
   vpc_peering_connection_id = aws_vpc_peering_connection.adm_usw2_adm_euc1.id
 }
-resource "aws_route" "adm_usw2_adm_euc1-adm_usw1-private" {
+resource "aws_route" "adm_usw2_adm_euc1-adm_usw2-private" {
   provider                  = aws.usw2
   route_table_id            = var.vpc-adm_usw2[3]
   destination_cidr_block    = var.vpc-adm_euc1[1]
