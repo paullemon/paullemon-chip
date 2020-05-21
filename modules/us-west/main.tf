@@ -498,28 +498,6 @@ resource "aws_default_network_acl" "nacl-adm" {
 }
 
 ##Peering
-resource "aws_vpc_peering_connection" "tfe-app" {
-  peer_vpc_id = aws_vpc.vpc-app.id
-  vpc_id      = aws_vpc.vpc-tfe.id
-  auto_accept = true
-  tags = merge(
-    var.default_tags,
-    map(
-      "Name", "TFE to APP Peering"
-    )
-  )
-}
-resource "aws_vpc_peering_connection" "tfe-adm" {
-  peer_vpc_id = aws_vpc.vpc-adm.id
-  vpc_id      = aws_vpc.vpc-tfe.id
-  auto_accept = true
-  tags = merge(
-    var.default_tags,
-    map(
-      "Name", "TFE to ADM Peering"
-    )
-  )
-}
 resource "aws_vpc_peering_connection" "app-adm" {
   peer_vpc_id = aws_vpc.vpc-adm.id
   vpc_id      = aws_vpc.vpc-app.id
